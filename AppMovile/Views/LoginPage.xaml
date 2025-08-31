@@ -1,0 +1,61 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMovile.Views.LoginPage"
+             BackgroundColor="White">
+
+    <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+
+        <!-- App Title -->
+        <Label Text="Nom App"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="#2D2235" />
+
+        <Label Text="Connectez-vous à votre compte"
+               HorizontalOptions="Center"
+               TextColor="#2D2235" />
+
+        <!-- Email -->
+        <Entry x:Name="EmailEntry"
+               Placeholder="Entrez votre E-Mail"
+               Keyboard="Email"
+               BackgroundColor="#F7F1EB"
+               TextColor="Black" />
+
+        <!-- Password -->
+        <Entry x:Name="PasswordEntry"
+               Placeholder="Entrez votre Mot de passe"
+               IsPassword="True"
+               BackgroundColor="#F7F1EB"
+               TextColor="Black" />
+
+        <!-- Forgot password -->
+        <Label Text="Mot de passe oublié"
+               TextColor="Black"
+               HorizontalOptions="End" />
+
+        <!-- Login button -->
+        <Button Text="Se connecter"
+                x:Name="LoginButton"
+                BackgroundColor="#E07C61"
+                TextColor="White"
+                CornerRadius="25"
+                HeightRequest="50"
+                Clicked="LoginButton_Clicked" />
+
+        <Label Text="OU"
+               HorizontalOptions="Center"
+               TextColor="#2D2235" />
+
+        <!-- Register navigation -->
+        <Button Text="S’inscrire"
+                BackgroundColor="White"
+                TextColor="#E07C61"
+                BorderColor="#E07C61"
+                BorderWidth="1"
+                CornerRadius="25"
+                HeightRequest="50"
+                Clicked="OnRegisterClicked"/>
+    </VerticalStackLayout>
+</ContentPage>

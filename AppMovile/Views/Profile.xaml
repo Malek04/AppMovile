@@ -1,0 +1,95 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMovile.Views.Profile"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False">
+
+    <VerticalStackLayout>
+
+        <!-- Header -->
+        <Grid BackgroundColor="#D97A4A" HeightRequest="70" Padding="15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Back Button -->
+            <ImageButton Source="back_icon.png"
+                         WidthRequest="28"
+                         HeightRequest="28"
+                         BackgroundColor="Transparent"
+                         Clicked="OnBackClicked"/>
+
+            <!-- Title -->
+            <Label Grid.Column="1"
+                   Text="Profile"
+                   FontSize="20"
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+        </Grid>
+
+        <!-- Content -->
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="20">
+
+                <Label Text="Vos informations"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="Black" />
+
+                <!-- Full Name -->
+                <Label Text="Nom et prénom" TextColor="Black" />
+                <Entry x:Name="FullNameEntry"
+                       Text="Foulen Ben foulen"
+                       BackgroundColor="#F7F1EB"
+                       TextColor="Black" />
+
+                <!-- Email -->
+                <Label Text="Adresse e-mail" TextColor="Black" />
+                <Entry x:Name="EmailEntry"
+                       Text="FoulenBenfoulen@domaine.com"
+                       BackgroundColor="#F7F1EB"
+                       TextColor="Black" />
+
+                <!-- Password -->
+                <Label Text="Mot de passe" TextColor="Black" />
+                <Grid>
+                    <Entry x:Name="PasswordEntry"
+                           Text="password"
+                           IsPassword="True"
+                           BackgroundColor="#F7F1EB"
+                           TextColor="Black" />
+                    <ImageButton Source="eye_icon.png"
+                                 HorizontalOptions="End"
+                                 VerticalOptions="Center"
+                                 WidthRequest="28"
+                                 HeightRequest="28"
+                                 BackgroundColor="Transparent"
+                                 Clicked="OnTogglePasswordVisibility"/>
+                </Grid>
+
+                <!-- Update Button -->
+                <Button Text="Mettre à jour"
+                        BackgroundColor="#E07C61"
+                        TextColor="White"
+                        CornerRadius="25"
+                        HeightRequest="50"
+                        Clicked="OnUpdateClicked"/>
+
+                <!-- Separator -->
+                <BoxView HeightRequest="1" BackgroundColor="#E0E0E0" />
+
+                <!-- Logout Button -->
+                <Button Text="Se déconnecter"
+                        BackgroundColor="White"
+                        TextColor="#E07C61"
+                        BorderColor="#E07C61"
+                        BorderWidth="1"
+                        CornerRadius="25"
+                        HeightRequest="50"
+                        Clicked="OnLogoutClicked"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </VerticalStackLayout>
+</ContentPage>

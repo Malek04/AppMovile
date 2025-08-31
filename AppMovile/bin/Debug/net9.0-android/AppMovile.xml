@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AppMovile</name>
+    </assembly>
+    <members>
+        <member name="M:AppMovile.Views.RegisterPage.CreatePasswordHash(System.String,System.String@,System.String@)">
+            <summary>
+            Creates a salted HMAC-SHA256 password hash.
+            Store both salt and hash (Base64) to verify later.
+            </summary>
+        </member>
+        <member name="M:AppMovile.Views.RegisterPage.VerifyPassword(System.String,System.String,System.String)">
+            <summary>
+            Verifies a password against stored salt+hash. (Useful for custom checks later.)
+            </summary>
+        </member>
+        <member name="T:AppMovile.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
+    </members>
+</doc>

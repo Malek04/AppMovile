@@ -1,0 +1,32 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMovile.Views.WelcomePage"
+             BackgroundColor="White">
+
+    <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+
+        <Label Text="Logo"
+               FontSize="48"
+               HorizontalOptions="Center"
+               TextColor="Black" />
+
+        <Label Text="Bienvenue à nom app"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="#2D2235" />
+
+        <Label Text="Description Description Description Description Description Description Description"
+               HorizontalOptions="Center"
+               FontSize="14"
+               TextColor="#2D2235"
+               HorizontalTextAlignment="Center" />
+
+        <Button Text="Commencer"
+                BackgroundColor="#E07C61"
+                TextColor="White"
+                CornerRadius="25"
+                HeightRequest="50"
+                Clicked="OnStartClicked"/>
+    </VerticalStackLayout>
+</ContentPage>
