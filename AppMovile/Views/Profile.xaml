@@ -4,92 +4,120 @@
              BackgroundColor="White"
              NavigationPage.HasNavigationBar="False">
 
-    <VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
 
-        <!-- Header -->
-        <Grid BackgroundColor="#D97A4A" HeightRequest="70" Padding="15">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+            <!-- HEADER -->
+            <Grid BackgroundColor="#E07A5F" HeightRequest="60" Padding="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <!-- Back Button -->
-            <ImageButton Source="back_icon.png"
-                         WidthRequest="28"
-                         HeightRequest="28"
-                         BackgroundColor="Transparent"
-                         Clicked="OnBackClicked"/>
+                <Label Text="Profile"
+                       VerticalOptions="Center"
+                       TextColor="White"
+                       FontSize="20"
+                       FontAttributes="Bold" />
 
-            <!-- Title -->
-            <Label Grid.Column="1"
-                   Text="Profile"
-                   FontSize="20"
-                   TextColor="White"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
-        </Grid>
+                <ImageButton Grid.Column="1"
+                             Source="back_icon.png"
+                             HeightRequest="30"
+                             WidthRequest="30"
+                             BackgroundColor="Transparent"
+                             HorizontalOptions="End"
+                             Clicked="OnBackClicked"/>
+            </Grid>
 
-        <!-- Content -->
-        <ScrollView>
-            <VerticalStackLayout Padding="20" Spacing="20">
+            <!-- PAGE CONTENT -->
+            <VerticalStackLayout Spacing="15" Padding="20">
 
                 <Label Text="Vos informations"
-                       FontSize="18"
+                       FontSize="22"
                        FontAttributes="Bold"
-                       TextColor="Black" />
+                       TextColor="Black"
+                       Margin="0,10,0,0" />
 
                 <!-- Full Name -->
-                <Label Text="Nom et prénom" TextColor="Black" />
+                <Label Text="Nom et prénom"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="5,0,0,0"/>
                 <Entry x:Name="FullNameEntry"
-                       Text="Foulen Ben foulen"
-                       BackgroundColor="#F7F1EB"
-                       TextColor="Black" />
+                       TextColor="Black"
+                       BackgroundColor="#FAF6F2"
+                       HeightRequest="45"
+                       Margin="0,0,0,10"
+                       HorizontalOptions="Fill"/>
 
                 <!-- Email -->
-                <Label Text="Adresse e-mail" TextColor="Black" />
+                <Label Text="Adresse e-mail"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="5,0,0,0"/>
                 <Entry x:Name="EmailEntry"
-                       Text="FoulenBenfoulen@domaine.com"
-                       BackgroundColor="#F7F1EB"
-                       TextColor="Black" />
+                       Keyboard="Email"
+                       TextColor="Black"
+                       BackgroundColor="#FAF6F2"
+                       HeightRequest="45"
+                       Margin="0,0,0,10"
+                       IsReadOnly="True"
+                       HorizontalOptions="Fill"/>
 
-                <!-- Password -->
-                <Label Text="Mot de passe" TextColor="Black" />
-                <Grid>
-                    <Entry x:Name="PasswordEntry"
-                           Text="password"
-                           IsPassword="True"
-                           BackgroundColor="#F7F1EB"
-                           TextColor="Black" />
-                    <ImageButton Source="eye_icon.png"
-                                 HorizontalOptions="End"
-                                 VerticalOptions="Center"
-                                 WidthRequest="28"
-                                 HeightRequest="28"
-                                 BackgroundColor="Transparent"
-                                 Clicked="OnTogglePasswordVisibility"/>
-                </Grid>
+                <!-- Password with eye toggle -->
+                <Label Text="Mot de passe"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       Margin="5,0,0,0"/>
+                <Border Stroke="#FAF6F2" StrokeThickness="1" BackgroundColor="#FAF6F2" 
+        HeightRequest="45" Margin="0,0,0,20" StrokeShape="RoundRectangle 10">
+                    <Grid ColumnDefinitions="*,40">
+                        <!-- Champ mot de passe -->
+                        <Entry x:Name="PasswordEntry"
+               IsPassword="True"
+               TextColor="Black"
+               BackgroundColor="Transparent"
+               Margin="10,0,0,0"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="Center"/>
+
+                        <!-- Bouton œil à l'intérieur -->
+                        <ImageButton x:Name="TogglePasswordButton"
+                     Grid.Column="1"
+                     Source="eye_closed.png"
+                     BackgroundColor="Transparent"
+                     Clicked="OnTogglePasswordClicked"
+                     HeightRequest="20"
+                     WidthRequest="20"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Center"/>
+                    </Grid>
+                </Border>
+
 
                 <!-- Update Button -->
                 <Button Text="Mettre à jour"
-                        BackgroundColor="#E07C61"
+                        BackgroundColor="#E07A5F"
                         TextColor="White"
-                        CornerRadius="25"
+                        CornerRadius="10"
                         HeightRequest="50"
-                        Clicked="OnUpdateClicked"/>
+                        FontAttributes="Bold"
+                        Clicked="OnUpdateClicked"
+                        Margin="0,10,0,0"/>
 
-                <!-- Separator -->
-                <BoxView HeightRequest="1" BackgroundColor="#E0E0E0" />
+                <BoxView HeightRequest="1" Color="LightGray" Margin="0,20,0,20"/>
 
                 <!-- Logout Button -->
                 <Button Text="Se déconnecter"
-                        BackgroundColor="White"
-                        TextColor="#E07C61"
-                        BorderColor="#E07C61"
+                        BackgroundColor="Transparent"
+                        TextColor="#E07A5F"
+                        BorderColor="#E07A5F"
                         BorderWidth="1"
-                        CornerRadius="25"
+                        CornerRadius="10"
                         HeightRequest="50"
-                        Clicked="OnLogoutClicked"/>
+                        Clicked="OnLogoutClicked"
+                        Margin="0,0,0,20"/>
             </VerticalStackLayout>
-        </ScrollView>
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

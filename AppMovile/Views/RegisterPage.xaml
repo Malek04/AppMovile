@@ -27,11 +27,27 @@
                    TextColor="Black" />
 
             <!-- Password -->
+            <Grid BackgroundColor="#F7F1EB"
+                  Padding="0"
+                  ColumnDefinitions="*,Auto">   
+
+                <!-- Password field -->
             <Entry x:Name="PasswordEntry"
+                   Grid.Column="0"
                    Placeholder="Entrez votre Mot de passe"
                    IsPassword="True"
-                   BackgroundColor="#F7F1EB"
-                   TextColor="Black" />
+                   BackgroundColor="Transparent"
+                   TextColor="Black"/>
+
+                <!-- Toggle button -->
+            <ImageButton x:Name="TogglePasswordButton"
+                 Grid.Column="1"
+                 Source="eye_closed.png"
+                 BackgroundColor="Transparent"
+                 WidthRequest="30"
+                 HeightRequest="30"
+                 Clicked="TogglePasswordButton_Clicked"/>
+            </Grid>
 
             <!-- Checkbox with wrapping text -->
             <Grid ColumnDefinitions="Auto,*" Padding="0,10,0,0">
@@ -60,6 +76,16 @@
                     </Label.FormattedText>
                 </Label>
             </Grid>
+
+            <!-- Loader -->
+            <ActivityIndicator x:Name="LoadingIndicator"
+                               IsVisible="False"
+                               IsRunning="False"
+                               Color="#E07C61"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               HeightRequest="40"
+                               WidthRequest="40"/>
 
             <!-- Register button -->
             <Button Text="S’inscrire"

@@ -21,6 +21,10 @@ namespace AppMovile.Views
 
         private async void RegisterButton_Clicked(object sender, EventArgs e)
         {
+            RegisterButton.IsEnabled = false;
+            LoadingIndicator.IsVisible = true;
+            LoadingIndicator.IsRunning = true;
+
             string fullName = FullNameEntry?.Text?.Trim();
             string email = EmailEntry?.Text?.Trim();
             string password = PasswordEntry?.Text ?? string.Empty;
@@ -31,23 +35,24 @@ namespace AppMovile.Views
                 string.IsNullOrWhiteSpace(password))
             {
                 await DisplayAlert("Erreur", "Remplissez tous les champs.", "OK");
+                ResetUI();
                 return;
             }
 
             if (!accepted)
             {
                 await DisplayAlert("Erreur", "Acceptez les conditions.", "OK");
+                ResetUI();
                 return;
             }
 
             try
             {
-                // 1) Create account in Firebase Auth (this securely stores the real password).
+                // Authentification Firebase
                 var authProvider = new FirebaseAuthProvider(new FirebaseConfig(FirebaseApiKey));
                 var auth = await authProvider.CreateUserWithEmailAndPasswordAsync(email, password);
 
-                // 2) Prepare user profile data for Realtime Database
-                //    We store a salted hash of the password, not the plain text.
+                // Hash & salt du mot de passe
                 CreatePasswordHash(password, out string saltBase64, out string hashBase64);
 
                 var userProfile = new UserProfile
@@ -58,13 +63,10 @@ namespace AppMovile.Views
                     CreatedAtUtc = DateTime.UtcNow,
                     AuthUserId = auth.User.LocalId,
                     PasswordSalt = saltBase64,
-                    PasswordHash = hashBase64,
-
-                    // If you insist on storing the raw password (NOT RECOMMENDED), uncomment:
-                    // PasswordPlain = password
+                    PasswordHash = hashBase64
                 };
 
-                // 3) Save profile to Realtime Database
+                // Sauvegarde dans Firebase Realtime DB
                 var firebaseClient = new FirebaseClient(FirebaseDatabaseUrl);
                 await firebaseClient
                     .Child("Users")
@@ -72,8 +74,9 @@ namespace AppMovile.Views
                     .PutAsync(userProfile);
 
                 await DisplayAlert("Succès", "Compte créé avec succès!", "OK");
-                // Optionally: navigate to main interface here
-                // await Navigation.PushAsync(new MainPage());
+
+                // Redirection vers LoginPage
+                await Navigation.PushAsync(new LoginPage());
             }
             catch (FirebaseAuthException fae)
             {
@@ -83,22 +86,27 @@ namespace AppMovile.Views
             {
                 await DisplayAlert("Erreur", ex.Message, "OK");
             }
+            finally
+            {
+                ResetUI();
+            }
         }
 
-        /// <summary>
-        /// Creates a salted HMAC-SHA256 password hash.
-        /// Store both salt and hash (Base64) to verify later.
-        /// </summary>
+        private void ResetUI()
+        {
+            RegisterButton.IsEnabled = true;
+            LoadingIndicator.IsVisible = false;
+            LoadingIndicator.IsRunning = false;
+        }
+
         private static void CreatePasswordHash(string password, out string saltBase64, out string hashBase64)
         {
-            if (password == null) throw new ArgumentNullException(nameof(password));
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Password cannot be empty/whitespace.", nameof(password));
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("Mot de passe vide", nameof(password));
 
-            // 16 bytes random salt
             byte[] salt = new byte[16];
             RandomNumberGenerator.Fill(salt);
 
-            // HMACSHA256 with salt as key
             using var hmac = new HMACSHA256(salt);
             byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
 
@@ -106,9 +114,6 @@ namespace AppMovile.Views
             hashBase64 = Convert.ToBase64String(hash);
         }
 
-        /// <summary>
-        /// Verifies a password against stored salt+hash. (Useful for custom checks later.)
-        /// </summary>
         public static bool VerifyPassword(string password, string saltBase64, string storedHashBase64)
         {
             byte[] salt = Convert.FromBase64String(saltBase64);
@@ -117,6 +122,12 @@ namespace AppMovile.Views
             byte[] computed = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             return CryptographicOperations.FixedTimeEquals(computed, expectedHash);
         }
+        private void TogglePasswordButton_Clicked(object sender, EventArgs e)
+        {
+            PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
+            TogglePasswordButton.Source = PasswordEntry.IsPassword ? "eye_closed.png" : "eye_open.png";
+        }
+
 
         private class UserProfile
         {
@@ -125,12 +136,8 @@ namespace AppMovile.Views
             public string Role { get; set; }
             public DateTime CreatedAtUtc { get; set; }
             public string AuthUserId { get; set; }
-
-            // Secure fields
             public string PasswordSalt { get; set; }
             public string PasswordHash { get; set; }
-
-            public string PasswordPlain { get; set; } // NOT RECOMMENDED
         }
     }
 }

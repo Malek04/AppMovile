@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AppMovile")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+e8f6d69ace03c55172e548e4fa40f045a6258c00")]
 [assembly: System.Reflection.AssemblyProductAttribute("AppMovile")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AppMovile")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

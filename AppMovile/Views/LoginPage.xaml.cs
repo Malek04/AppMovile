@@ -1,84 +1,123 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Firebase.Auth;
+using AppMovile.Models;
 using Firebase.Database;
 using Firebase.Database.Query;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Storage; // for Preferences
+using Microsoft.Maui.Storage;
 
-namespace AppMovile.Views
+namespace AppMovile.Views;
+
+public partial class LoginPage : ContentPage
 {
-    public partial class LoginPage : ContentPage
+    private const string FirebaseApiKey = "AIzaSyDYJK9V5mO8mhMHtfPaCbI2Z-YaBItKlqA";
+    private const string FirebaseDatabaseUrl = "https://appmobile-6ec0e-default-rtdb.firebaseio.com/";
+
+    public LoginPage()
     {
-        private const string FirebaseApiKey = "AIzaSyDYJK9V5mO8mhMHtfPaCbI2Z-YaBItKlqA";
-        private const string FirebaseDatabaseUrl = "https://appmobile-6ec0e-default-rtdb.firebaseio.com/";
+        InitializeComponent();
+    }
 
-        public LoginPage()
+    private void OnRegisterClicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new RegisterPage());
+    }
+
+    private async void LoginButton_Clicked(object sender, EventArgs e)
+    {
+        string email = EmailEntry.Text?.Trim();
+        string password = PasswordEntry.Text?.Trim();
+
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
-            InitializeComponent();
+            await DisplayAlert("Erreur", "Remplissez tous les champs.", "OK");
+            return;
         }
 
-        private void OnRegisterClicked(object sender, EventArgs e)
+        try
         {
-            Navigation.PushAsync(new RegisterPage());
-        }
+            // Disable button and show loader
+            LoginButton.IsEnabled = false;
+            LoginButton.Text = string.Empty;
+            LoginLoader.IsVisible = true;
+            LoginLoader.IsRunning = true;
 
-        private async void LoginButton_Clicked(object sender, EventArgs e)
-        {
-            string email = EmailEntry.Text?.Trim();
-            string password = PasswordEntry.Text?.Trim();
+            // Firebase authentication
+            var authProvider = new FirebaseAuthProvider(new FirebaseConfig(FirebaseApiKey));
+            var auth = await authProvider.SignInWithEmailAndPasswordAsync(email, password);
 
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            if (auth.User == null || string.IsNullOrEmpty(auth.User.LocalId))
             {
-                await DisplayAlert("Erreur", "Remplissez tous les champs.", "OK");
+                await DisplayAlert("Erreur", "Utilisateur invalide. LocalId introuvable.", "OK");
                 return;
             }
 
-            try
+            // Get user data from Firebase DB
+            var firebaseClient = new FirebaseClient(FirebaseDatabaseUrl);
+            var userData = await firebaseClient
+                .Child("Users")
+                .Child(auth.User.LocalId)
+                .OnceSingleAsync<UserModel>();
+
+            if (userData == null)
             {
-                // 1. Authentification Firebase
-                var authProvider = new FirebaseAuthProvider(new FirebaseConfig(FirebaseApiKey));
-                var auth = await authProvider.SignInWithEmailAndPasswordAsync(email, password);
-
-                if (auth.User == null || string.IsNullOrEmpty(auth.User.LocalId))
-                {
-                    await DisplayAlert("Erreur", "Utilisateur invalide. LocalId introuvable.", "OK");
-                    return;
-                }
-
-                // 2. Lecture des infos utilisateur dans la DB
-                var firebaseClient = new FirebaseClient(FirebaseDatabaseUrl);
-                var userData = await firebaseClient
-                    .Child("Users")
-                    .Child(auth.User.LocalId)
-                    .OnceSingleAsync<UserModel>();
-
-                if (userData == null)
-                {
-                    await DisplayAlert("Erreur", "Utilisateur introuvable dans la base de données.", "OK");
-                    return;
-                }
-
-                // 3. Sauvegarde des données utilisateur (Session)
-
-                Preferences.Set("UserFullName", userData.FullName ?? "");
-                Preferences.Set("UserEmail", userData.Email ?? "");
-                Preferences.Set("UserRole", userData.Role ?? "");
-
-                // 4. Navigation vers MainPage
-                Application.Current.MainPage = new NavigationPage(new MainPage());
+                await DisplayAlert("Erreur", "Utilisateur introuvable dans la base de données.", "OK");
+                return;
             }
-            catch (Exception ex)
+
+            // Save session
+            Preferences.Set("AuthUserId", auth.User.LocalId);
+            Preferences.Set("UserFullName", userData.FullName ?? "");
+            Preferences.Set("UserEmail", userData.Email ?? "");
+            Preferences.Set("UserRole", userData.Role ?? "");
+            Preferences.Set("Password", password);
+
+            // Navigate to MainPage
+            Application.Current.MainPage = new NavigationPage(new MainPage());
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur", $"Crash détecté : {ex.Message}", "OK");
+        }
+        finally
+        {
+            if (Application.Current.MainPage is not NavigationPage)
             {
-                await DisplayAlert("Erreur", $"Crash détecté : {ex.Message}", "OK");
+                LoginButton.IsEnabled = true;
+                LoginButton.Text = "Se connecter";
+                LoginLoader.IsVisible = false;
+                LoginLoader.IsRunning = false;
             }
         }
     }
 
-    public class UserModel
+    private void TogglePasswordButton_Clicked(object sender, EventArgs e)
     {
-        public string FullName { get; set; }
-        public string Email { get; set; }
-        public string Role { get; set; }
+        PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
+        TogglePasswordButton.Source = PasswordEntry.IsPassword ? "eye_closed.png" : "eye_open.png";
+    }
+
+    // 🔹 Forgot password
+    private async void OnForgotPasswordTapped(object sender, EventArgs e)
+    {
+        string email = EmailEntry.Text?.Trim();
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            await DisplayAlert("Erreur", "Veuillez entrer votre adresse email pour réinitialiser le mot de passe.", "OK");
+            return;
+        }
+
+        try
+        {
+            var authProvider = new FirebaseAuthProvider(new FirebaseConfig(FirebaseApiKey));
+            await authProvider.SendPasswordResetEmailAsync(email);
+
+            await DisplayAlert("Succès", $"Un email de réinitialisation a été envoyé à {email}.", "OK");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur", $"Impossible d'envoyer l'email : {ex.Message}", "OK");
+        }
     }
 }

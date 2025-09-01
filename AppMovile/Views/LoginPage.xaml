@@ -23,26 +23,61 @@
                BackgroundColor="#F7F1EB"
                TextColor="Black" />
 
-        <!-- Password -->
-        <Entry x:Name="PasswordEntry"
-               Placeholder="Entrez votre Mot de passe"
-               IsPassword="True"
-               BackgroundColor="#F7F1EB"
-               TextColor="Black" />
+        <!-- Password with eye toggle -->
+        <Grid BackgroundColor="#F7F1EB"
+              Padding="0"
+              ColumnDefinitions="*,Auto">
+
+            <!-- Password Entry -->
+            <Entry x:Name="PasswordEntry"
+                   Grid.Column="0"
+                   Placeholder="Entrez votre Mot de passe"
+                   IsPassword="True"
+                   BackgroundColor="Transparent"
+                   TextColor="Black"/>
+
+            <!-- Toggle eye button -->
+            <ImageButton x:Name="TogglePasswordButton"
+                         Grid.Column="1"
+                         Source="eye_closed.png"
+                         BackgroundColor="Transparent"
+                         WidthRequest="30"
+                         HeightRequest="30"
+                         Clicked="TogglePasswordButton_Clicked"/>
+        </Grid>
 
         <!-- Forgot password -->
-        <Label Text="Mot de passe oublié"
+        <Label Text="Mot de passe oublié ?"
                TextColor="Black"
-               HorizontalOptions="End" />
+               HorizontalOptions="End">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnForgotPasswordTapped"/>
+            </Label.GestureRecognizers>
+        </Label>
 
-        <!-- Login button -->
-        <Button Text="Se connecter"
-                x:Name="LoginButton"
-                BackgroundColor="#E07C61"
-                TextColor="White"
-                CornerRadius="25"
-                HeightRequest="50"
-                Clicked="LoginButton_Clicked" />
+        <!-- Login button with loader -->
+        <Grid HeightRequest="50"
+              x:Name="LoginButtonGrid">
+
+            <!-- Actual button -->
+            <Button x:Name="LoginButton"
+                    Text="Se connecter"
+                    BackgroundColor="#E07C61"
+                    TextColor="White"
+                    CornerRadius="25"
+                    Clicked="LoginButton_Clicked"
+                    IsEnabled="True"/>
+
+            <!-- Loader (hidden at first) -->
+            <ActivityIndicator x:Name="LoginLoader"
+                               IsRunning="False"
+                               IsVisible="False"
+                               Color="White"
+                               WidthRequest="25"
+                               HeightRequest="25"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+        </Grid>
 
         <Label Text="OU"
                HorizontalOptions="Center"

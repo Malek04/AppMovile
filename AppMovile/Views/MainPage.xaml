@@ -3,10 +3,105 @@
              x:Class="AppMovile.Views.MainPage"
              BackgroundColor="White">
 
-    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
-        <Label x:Name="HelloLabel"
-               FontSize="24"
+    <VerticalStackLayout Spacing="15">
+
+        <!-- HEADER -->
+        <Grid BackgroundColor="#E07A5F" Padding="10" HeightRequest="60">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label Text="Nom App"
+                   VerticalOptions="Center"
+                   TextColor="White"
+                   FontSize="20"
+                   FontAttributes="Bold" />
+
+            <ImageButton x:Name="AddButton"
+                 Grid.Column="1"
+                 Source="add_icon.png"
+                 HeightRequest="30"
+                 WidthRequest="30"
+                 BackgroundColor="Transparent"
+                 HorizontalOptions="End"
+                 IsVisible="False" />
+
+
+            <ImageButton Grid.Column="2"
+                         Source="user.png"
+                         HeightRequest="30"
+                         WidthRequest="30"
+                         BackgroundColor="Transparent"
+                         HorizontalOptions="Start"
+                         Margin="10,0,0,0" 
+                         Clicked="OnUserButtonClicked"/>
+
+        </Grid>
+
+        <!-- USER GREETING -->
+        <Label x:Name="WelcomeLabel"
+               FontSize="18"
                FontAttributes="Bold"
-               TextColor="Black" />
+               TextColor="Black"
+               Margin="20,10,0,0" />
+
+        <!-- CATEGORY FILTER -->
+        <ScrollView Orientation="Horizontal" Margin="10,0,0,0">
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="Toutes" BackgroundColor="#E5E5E5" TextColor="Black" CornerRadius="15" />
+                <Button Text="Categorie 1" BackgroundColor="#E5E5E5" TextColor="Black" CornerRadius="15" />
+                <Button Text="Categorie 2" BackgroundColor="#E5E5E5" TextColor="Black" CornerRadius="15" />
+                <Button Text="Categorie 3" BackgroundColor="#E5E5E5" TextColor="Black" CornerRadius="15" />
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- STATIC CARDS -->
+        <ScrollView>
+            <VerticalStackLayout Padding="10" Spacing="10">
+
+                <Frame CornerRadius="10" Padding="10" BackgroundColor="#F8F5F2">
+                    <Grid ColumnDefinitions="60, *" ColumnSpacing="10">
+                        <Image Source="placeholder.png" WidthRequest="50" HeightRequest="50" />
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Titre 1" FontAttributes="Bold" FontSize="16" />
+                            <Label Text="Description de l'element numero un avec un texte fixe."
+                                   FontSize="14"
+                                   TextColor="Gray"
+                                   LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame CornerRadius="10" Padding="10" BackgroundColor="#F8F5F2">
+                    <Grid ColumnDefinitions="60, *" ColumnSpacing="10">
+                        <Image Source="placeholder.png" WidthRequest="50" HeightRequest="50" />
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Titre 2" FontAttributes="Bold" FontSize="16" />
+                            <Label Text="Deuxieme description avec un contenu statique."
+                                   FontSize="14"
+                                   TextColor="Gray"
+                                   LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame CornerRadius="10" Padding="10" BackgroundColor="#F8F5F2">
+                    <Grid ColumnDefinitions="60, *" ColumnSpacing="10">
+                        <Image Source="placeholder.png" WidthRequest="50" HeightRequest="50" />
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="Titre 3" FontAttributes="Bold" FontSize="16" />
+                            <Label Text="Troisieme description statique pour l'exemple."
+                                   FontSize="14"
+                                   TextColor="Gray"
+                                   LineBreakMode="WordWrap" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
     </VerticalStackLayout>
 </ContentPage>
