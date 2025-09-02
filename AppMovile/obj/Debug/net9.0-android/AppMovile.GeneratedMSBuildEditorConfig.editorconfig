@@ -48,6 +48,12 @@ build_metadata.AdditionalFiles.ManifestResourceName = AppMovile.Views.AddCategor
 build_metadata.AdditionalFiles.TargetPath = Views\AddCategory.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\AddCategory.xaml
 
+[C:/Users/Lenovo/Documents/GitHub/AppMovile/AppMovile/Views/AddCourse.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = AppMovile.Views.AddCourse.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\AddCourse.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\AddCourse.xaml
+
 [C:/Users/Lenovo/Documents/GitHub/AppMovile/AppMovile/Views/LoginPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = AppMovile.Views.LoginPage.xaml

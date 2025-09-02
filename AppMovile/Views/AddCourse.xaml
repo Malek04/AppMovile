@@ -1,0 +1,165 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMovile.Views.AddCourse"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15">
+
+            <!-- HEADER (full width, no padding applied) -->
+            <Grid BackgroundColor="#E07A5F" Padding="10" HeightRequest="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Nom App"
+                       VerticalOptions="Center"
+                       TextColor="White"
+                       FontSize="20"
+                       FontAttributes="Bold" />
+
+                <ImageButton x:Name="AddCourseButton"
+                             Grid.Column="1"
+                             Source="add_icon.png"
+                             HeightRequest="30"
+                             WidthRequest="30"
+                             BackgroundColor="Transparent"
+                             HorizontalOptions="End" />
+
+                <ImageButton Grid.Column="2"
+                             Source="user.png"
+                             HeightRequest="30"
+                             WidthRequest="30"
+                             BackgroundColor="Transparent"
+                             HorizontalOptions="Start"
+                             Margin="10,0,0,0"
+                             Clicked="OnUserButtonClicked"/>
+            </Grid>
+
+            <!-- MAIN CONTENT (everything padded) -->
+            <VerticalStackLayout Padding="15" Spacing="15">
+
+                <!-- NAVIGATION BUTTONS -->
+                <HorizontalStackLayout Spacing="10">
+                    <Button Text="Catégorie"
+                            BackgroundColor="#F8F5F2"
+                            CornerRadius="10"
+                            FontAttributes="Bold"
+                            TextColor="Black"
+                            Clicked="OnCategorieClicked"/>
+                    <Button Text="Cours"
+                            BackgroundColor="#F8F5F2"
+                            CornerRadius="10"
+                            TextColor="Black"
+                            Clicked="OnCoursClicked"/>
+                    <Button Text="Questionnaire"
+                            BackgroundColor="#F8F5F2"
+                            CornerRadius="10"
+                            TextColor="Black"
+                            Clicked="OnQuestionnaireClicked"/>
+                </HorizontalStackLayout>
+
+                <!-- COURSE FORM -->
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Ajouter un Cours :"
+                           FontAttributes="Bold"
+                           FontSize="16"
+                           TextColor="Black" />
+
+                    <Entry x:Name="TitleEntry"
+                           Placeholder="Titre du cours"
+                           BackgroundColor="#F8F5F2"
+                           TextColor="Black"/>
+
+                    <Editor x:Name="DescriptionEditor"
+                            Placeholder="Description"
+                            BackgroundColor="#F8F5F2"
+                            TextColor="Black"
+                            HeightRequest="100"/>
+
+                    <Picker x:Name="CategoryPicker"
+                            Title="Sélectionner une catégorie"
+                            BackgroundColor="#F8F5F2"
+                            TextColor="Black"/>
+
+                    <Entry x:Name="ImageUrlEntry"
+                           Placeholder="Lien image Google Drive"
+                           BackgroundColor="#F8F5F2"
+                           TextColor="Black"/>
+
+                    <Button Text="Enregistrer"
+                            BackgroundColor="#E07A5F"
+                            TextColor="White"
+                            CornerRadius="10"
+                            Clicked="OnSaveCourseClicked"/>
+                </VerticalStackLayout>
+
+                <!-- COURSES TABLE -->
+                <Label Text="Liste des cours:"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       TextColor="Black"
+                       Margin="0,15,0,5"/>
+
+                <CollectionView x:Name="CoursesCollection" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="5"
+                                   BackgroundColor="#F8F5F2"
+                                   Padding="5"
+                                   Margin="0,5,0,5">
+                                <Grid ColumnDefinitions="60, *, Auto, Auto"
+                                      RowDefinitions="Auto">
+
+                                    <!-- Course Image -->
+                                    <Image Grid.Column="0"
+                                           Source="{Binding ImageUrl}"
+                                           HeightRequest="50"
+                                           WidthRequest="50"
+                                           Aspect="AspectFill"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Center"/>
+
+                                    <!-- Course info -->
+                                    <StackLayout Grid.Column="1"
+                                                 Spacing="2"
+                                                 VerticalOptions="Center">
+                                        <Label Text="{Binding Title}"
+                                               FontAttributes="Bold"
+                                               TextColor="Black"/>
+                                        <Label Text="{Binding Category}"
+                                               TextColor="Black"/>
+                                        <Label Text="{Binding Description}"
+                                               TextColor="Black"
+                                               LineBreakMode="TailTruncation"/>
+                                    </StackLayout>
+
+                                    <!-- Edit Button -->
+                                    <ImageButton Grid.Column="2"
+                                                 Source="edit.png"
+                                                 WidthRequest="24"
+                                                 HeightRequest="24"
+                                                 BackgroundColor="Transparent"
+                                                 CommandParameter="{Binding .}"
+                                                 Clicked="OnEditCourseClicked"/>
+
+                                    <!-- Delete Button -->
+                                    <ImageButton Grid.Column="3"
+                                                 Source="delete.png"
+                                                 WidthRequest="24"
+                                                 HeightRequest="24"
+                                                 BackgroundColor="Transparent"
+                                                 CommandParameter="{Binding .}"
+                                                 Clicked="OnDeleteCourseClicked"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

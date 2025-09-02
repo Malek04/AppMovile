@@ -43,19 +43,23 @@
         <!-- NAVIGATION BUTTONS -->
         <HorizontalStackLayout Spacing="10" Margin="10">
             <Button Text="Catégorie"
-                    BackgroundColor="#F8F5F2"
-                    CornerRadius="10"
-                    FontAttributes="Bold"
-                    TextColor="Black"/>
+            BackgroundColor="#F8F5F2"
+            CornerRadius="10"
+            FontAttributes="Bold"
+            TextColor="Black"
+            Clicked="OnCategorieClicked"/>
             <Button Text="Cours"
-                    BackgroundColor="#F8F5F2"
-                    CornerRadius="10"
-                    TextColor="Black"/>
+            BackgroundColor="#F8F5F2"
+            CornerRadius="10"
+            TextColor="Black"
+            Clicked="OnCoursClicked"/>
             <Button Text="Questionnaire"
-                    BackgroundColor="#F8F5F2"
-                    CornerRadius="10"
-                    TextColor="Black"/>
+            BackgroundColor="#F8F5F2"
+            CornerRadius="10"
+            TextColor="Black"
+            Clicked="OnQuestionnaireClicked"/>
         </HorizontalStackLayout>
+
 
         <!-- CATEGORY LIST -->
         <VerticalStackLayout Padding="15" Spacing="10">

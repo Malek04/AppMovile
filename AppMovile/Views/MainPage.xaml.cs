@@ -9,6 +9,7 @@ public partial class MainPage : ContentPage
 {
     private FirebaseClient firebase;
     private List<string> allCategories = new();
+    private List<Course> allCourses = new(); // Tous les cours chargés une seule fois
 
     public List<string> Categories { get; set; } = new();
 
@@ -17,7 +18,7 @@ public partial class MainPage : ContentPage
         InitializeComponent();
         NavigationPage.SetHasNavigationBar(this, false);
 
-        // Firebase init (replace with your DB URL)
+        // Firebase init
         firebase = new FirebaseClient("https://appmobile-6ec0e-default-rtdb.firebaseio.com/");
 
         // Load session data
@@ -29,8 +30,9 @@ public partial class MainPage : ContentPage
         // Show + button only for admin
         AddButton.IsVisible = role.Equals("admin", StringComparison.OrdinalIgnoreCase);
 
-        // Load categories
+        // Load categories + courses
         LoadCategories();
+        LoadCourses();
     }
 
     private async void LoadCategories()
@@ -38,7 +40,7 @@ public partial class MainPage : ContentPage
         try
         {
             var categoriesFromDb = await firebase
-                .Child("categories") 
+                .Child("categories")
                 .OnceAsync<CategoryModel>();
 
             allCategories = categoriesFromDb
@@ -59,56 +61,62 @@ public partial class MainPage : ContentPage
         }
     }
 
+    private async void LoadCourses()
+    {
+        try
+        {
+            var coursesFromDb = await firebase
+                .Child("courses")
+                .OnceAsync<Course>();
 
+            allCourses = coursesFromDb
+                .Select(c => new Course
+                {
+                    Key = c.Key,
+                    Title = c.Object.Title,
+                    Description = c.Object.Description,
+                    Category = c.Object.Category,
+                    ImageUrl = c.Object.ImageUrl
+                })
+                .ToList();
 
-
-
+            // Par défaut afficher tous les cours
+            DisplayCourses("Toutes");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur", $"Impossible de charger les cours : {ex.Message}", "OK");
+        }
+    }
 
     private void OnCategoryClicked(object sender, EventArgs e)
     {
         if (sender is Button btn)
         {
             string selectedCategory = btn.Text;
-
-            // Clear old cards
-            CardsContainer.Children.Clear();
-
-            // Filter logic
-            var items = GetSampleItems(); // Replace with Firebase items query later
-
-            if (selectedCategory != "Toutes")
-            {
-                items = items.Where(i => i.Category == selectedCategory).ToList();
-            }
-
-            // Render filtered items
-            foreach (var item in items)
-            {
-                CardsContainer.Children.Add(CreateCard(item.Title, item.Description));
-            }
+            DisplayCourses(selectedCategory);
         }
     }
 
-    // Example item class
-    private class Item
+    private void DisplayCourses(string selectedCategory)
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }
-    }
+        // Clear old cards
+        CardsContainer.Children.Clear();
 
-    // Fake data (replace with Firebase query for items)
-    private List<Item> GetSampleItems()
-    {
-        return new List<Item>
+        IEnumerable<Course> items = allCourses;
+
+        if (selectedCategory != "Toutes")
         {
-            new Item { Title = "Titre 1", Description = "Description 1", Category = "Categorie 1" },
-            new Item { Title = "Titre 2", Description = "Description 2", Category = "Categorie 2" },
-            new Item { Title = "Titre 3", Description = "Description 3", Category = "Categorie 3" },
-        };
+            items = items.Where(i => i.Category == selectedCategory);
+        }
+
+        foreach (var course in items)
+        {
+            CardsContainer.Children.Add(CreateCard(course));
+        }
     }
 
-    private Frame CreateCard(string title, string description)
+    private Frame CreateCard(Course course)
     {
         return new Frame
         {
@@ -118,26 +126,33 @@ public partial class MainPage : ContentPage
             Content = new Grid
             {
                 ColumnDefinitions =
-                {
-                    new ColumnDefinition { Width = new GridLength(60) },
-                    new ColumnDefinition { Width = GridLength.Star }
-                },
+            {
+                new ColumnDefinition { Width = new GridLength(80) },
+                new ColumnDefinition { Width = GridLength.Star }
+            },
                 ColumnSpacing = 10,
                 Children =
+            {
+                new Image
                 {
-                    new Image { Source = "placeholder.png", WidthRequest = 50, HeightRequest = 50 },
-                    new VerticalStackLayout
-                    {
-                        Children =
-                        {
-                            new Label { Text = title, FontAttributes = FontAttributes.Bold, FontSize = 16 },
-                            new Label { Text = description, FontSize = 14, TextColor = Colors.Gray, LineBreakMode = LineBreakMode.WordWrap }
-                        }
-                    }.Assign(Grid.ColumnProperty, 1)
-                }
+                    Source = string.IsNullOrEmpty(course.ImageUrl) ? "placeholder.png" : course.ImageUrl,
+                    WidthRequest = 70,
+                    HeightRequest = 70,
+                    Aspect = Aspect.AspectFill
+                },
+                new Label
+                {
+                    Text = course.Title,
+                    FontAttributes = FontAttributes.Bold,
+                    FontSize = 16,
+                    TextColor = Colors.Black,
+                    VerticalOptions = LayoutOptions.Center
+                }.Assign(Grid.ColumnProperty, 1)
+            }
             }
         };
     }
+
 
     private async void OnUserButtonClicked(object sender, EventArgs e)
     {

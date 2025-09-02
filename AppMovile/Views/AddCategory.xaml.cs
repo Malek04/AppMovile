@@ -17,7 +17,22 @@ public partial class AddCategory : ContentPage
         firebase = new FirebaseClient("https://appmobile-6ec0e-default-rtdb.firebaseio.com/");
         LoadCategories();
     }
+    private async void OnCategorieClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new AddCategory());
+    }
 
+    // Navigate to AddCourse page (current page)
+    private async void OnCoursClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new AddCourse());
+    }
+
+    // Navigate to Questionnaire page
+    private async void OnQuestionnaireClicked(object sender, EventArgs e)
+    {
+        //await Navigation.PushAsync(new QuestionnairePage());
+    }
     private async void LoadCategories()
     {
         var categories = await firebase
