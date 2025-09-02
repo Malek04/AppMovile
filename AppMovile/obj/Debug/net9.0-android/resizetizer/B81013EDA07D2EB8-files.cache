@@ -1,5 +1,7 @@
 ﻿obj\Debug\net9.0-android\resizetizer\r\drawable\add_icon.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\back_icon.png
+obj\Debug\net9.0-android\resizetizer\r\drawable\delete.png
+obj\Debug\net9.0-android\resizetizer\r\drawable\edit.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\eye_closed.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\eye_open.png
 obj\Debug\net9.0-android\resizetizer\r\drawable\user.png

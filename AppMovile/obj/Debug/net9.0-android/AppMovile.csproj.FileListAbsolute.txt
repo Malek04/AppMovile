@@ -2242,3 +2242,5 @@ C:\Users\Lenovo\Documents\GitHub\AppMovile\AppMovile\obj\Debug\net9.0-android\an
 C:\Users\Lenovo\Documents\GitHub\AppMovile\AppMovile\obj\Debug\net9.0-android\android\marshal_methods.armeabi-v7a.o
 C:\Users\Lenovo\Documents\GitHub\AppMovile\AppMovile\obj\Debug\net9.0-android\android\jni_remap.armeabi-v7a.o
 C:\Users\Lenovo\Documents\GitHub\AppMovile\AppMovile\obj\Debug\net9.0-android\app_shared_libraries\armeabi-v7a\libxamarin-app.so
+C:\Users\Lenovo\Documents\GitHub\AppMovile\AppMovile\obj\Debug\net9.0-android\resizetizer\r\drawable\delete.png
+C:\Users\Lenovo\Documents\GitHub\AppMovile\AppMovile\obj\Debug\net9.0-android\resizetizer\r\drawable\edit.png

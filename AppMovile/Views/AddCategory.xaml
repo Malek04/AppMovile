@@ -1,0 +1,109 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppMovile.Views.AddCategory"
+             BackgroundColor="White">
+
+    <VerticalStackLayout Spacing="15">
+
+        <!-- HEADER (same as MainPage) -->
+        <Grid BackgroundColor="#E07A5F" Padding="10" HeightRequest="60">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label Text="Nom App"
+                   VerticalOptions="Center"
+                   TextColor="White"
+                   FontSize="20"
+                   FontAttributes="Bold" />
+
+            <!-- Add button specific for Category -->
+            <ImageButton x:Name="AddCategoryButton"
+                         Grid.Column="1"
+                         Source="add_icon.png"
+                         HeightRequest="30"
+                         WidthRequest="30"
+                         BackgroundColor="Transparent"
+                         HorizontalOptions="End"
+                         Clicked="OnNewCategoryClicked"/>
+            <!-- ✅ updated -->
+
+            <ImageButton Grid.Column="2"
+                         Source="user.png"
+                         HeightRequest="30"
+                         WidthRequest="30"
+                         BackgroundColor="Transparent"
+                         HorizontalOptions="Start"
+                         Margin="10,0,0,0"
+                         Clicked="OnUserButtonClicked"/>
+        </Grid>
+
+        <!-- NAVIGATION BUTTONS -->
+        <HorizontalStackLayout Spacing="10" Margin="10">
+            <Button Text="Catégorie"
+                    BackgroundColor="#F8F5F2"
+                    CornerRadius="10"
+                    FontAttributes="Bold"
+                    TextColor="Black"/>
+            <Button Text="Cours"
+                    BackgroundColor="#F8F5F2"
+                    CornerRadius="10"
+                    TextColor="Black"/>
+            <Button Text="Questionnaire"
+                    BackgroundColor="#F8F5F2"
+                    CornerRadius="10"
+                    TextColor="Black"/>
+        </HorizontalStackLayout>
+
+        <!-- CATEGORY LIST -->
+        <VerticalStackLayout Padding="15" Spacing="10">
+
+            <Label Text="Liste des Catégories :"
+                   FontAttributes="Bold"
+                   FontSize="16"
+                   TextColor="Black" />
+
+            <!-- Add New Category Button -->
+            <Button Text="➕ Ajouter une Catégorie"
+                    BackgroundColor="#E07A5F"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnNewCategoryClicked"/>
+            <!-- ✅ unified -->
+
+            <!-- Dynamic Categories -->
+            <!-- Dynamic Categories -->
+            <CollectionView x:Name="CategoriesList" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="5" BackgroundColor="#F8F5F2" Padding="5">
+                            <Grid ColumnDefinitions="*, Auto, Auto" Padding="5">
+                                <Label Text="{Binding Name}"
+                                       VerticalOptions="Center"
+                                       TextColor="Black"/>
+                                <!-- ✅ dynamic text also black -->
+                                <ImageButton Grid.Column="1"
+                                             Source="edit.png"
+                                             WidthRequest="24"
+                                             HeightRequest="24"
+                                             BackgroundColor="Transparent"
+                                             CommandParameter="{Binding .}"
+                                             Clicked="OnEditCategoryClicked"/>
+                                <ImageButton Grid.Column="2"
+                                             Source="delete.png"
+                                             WidthRequest="24"
+                                             HeightRequest="24"
+                                             BackgroundColor="Transparent"
+                                             CommandParameter="{Binding .}"
+                                             Clicked="OnDeleteCategoryClicked"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>
